@@ -43,14 +43,19 @@
                 echo $info;
    			 }
         }if(strtolower( $postObj->MsgType) == 'text'){
+			//获得发送数据
         	 $content= $postObj->Content; 
+			 //后两个字符
         	 $str = mb_substr($content,-2,2,"UTF-8");
+			 //城市名称
 			$str_key = mb_substr($content,0,-2,"UTF-8");
- 
+			//判断是否查询天气
          if($str == '天气' && !empty($str_key))
 			{
     		if(!empty($str_key)){
+				//请求数据
        			 $json=file_get_contents("http://139.199.127.163/city/".$str_key);
+				 //json解码
        		    $data= json_decode( $json );
     		} else {
         		return null;
@@ -72,11 +77,13 @@
                   			  "温馨提示：".$data->data->ganmao.
                   			"\n\n明天".$data->data->forecast[1]->week."\n".
                    				"天气：".$data->data->forecast[1]->type."\n"
-                             ."温度：".mb_substr($data->data->forecast[1]->low,6)."~".mb_substr($data->data->forecast[1]->high,6)."\n".         
+                             ."温度：".mb_substr($data->data->forecast[1]->low,6).
+							 "~".mb_substr($data->data->forecast[1]->high,6)."\n".         
                  			 "风力：".$data->data->forecast[1]->fx.$data->data->forecast[1]->fl."\n".
                   			"\n后天".$data->data->forecast[2]->week."\n".
                    			"天气：".$data->data->forecast[2]->type."\n"
-                             ."温度：".mb_substr($data->data->forecast[2]->low,6)."~".mb_substr($data->data->forecast[2]->high,6)."\n".
+                             ."温度：".mb_substr($data->data->forecast[2]->low,6).
+							 "~".mb_substr($data->data->forecast[2]->high,6)."\n".
                   			  "风力：".$data->data->forecast[2]->fx.$data->data->forecast[2]->fl;
                   				 
                 $template = "<xml>
